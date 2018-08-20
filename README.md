@@ -34,10 +34,15 @@ You can try the following API's once the server is running.
 
 ``` curl http://localhost:8080/task```
 
-GET __/person/{id}__
+GET __/task/{id}__
 
 ``` curl http://localhost:8080/task/{id}```
 
-POST __/person__
+GET __/task/delete/{id}__
+
+``` curl http://localhost:8080/task/delete/{id}```
+
+
+POST __/task__
 
 ``` curl -X POST -d '{"nome":"Pizzaria task"}' -H "Content-Type: application/json" http://localhost:8080/task```
