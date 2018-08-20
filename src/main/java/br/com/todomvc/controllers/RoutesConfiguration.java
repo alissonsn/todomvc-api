@@ -30,12 +30,18 @@ public class RoutesConfiguration {
 				route(RequestPredicates.GET("/{id}"),
 						request -> ok().body(taskRespository.findById(request.pathVariable("id")), TaskModel.class))
 
-				.andRoute(RequestPredicates.GET("/delete/{id}"), 
+				.andRoute(RequestPredicates.GET("/remover/{id}"), 
 						request -> {
 							taskRespository.deleteById(request.pathVariable("id")).subscribe();
 							return ok().build();
 						})
-
+				
+				.andRoute(RequestPredicates.GET("/remover-muitos/{id}"), 
+						request -> {
+							taskRespository.deleteById(request.pathVariable("id").split(",")).subscribe();
+							return ok().build();
+						})
+				
 				.andRoute(method(HttpMethod.POST),
 						request -> {
 							taskRespository.insert(request.bodyToMono(TaskModel.class)).subscribe();
