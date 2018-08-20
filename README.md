@@ -4,8 +4,6 @@ This is a sample application that shows how to build a web application using
  - Spring Boot 2
  - Spring Webflux
  - Spring Reactive Data MongoDb
- - Spring Security Reactive Webflux
- 
  
 <br/>
 Please see the following pages for more details
@@ -19,10 +17,10 @@ Please see the following pages for more details
 In application.properties, configure appropriate values.
 <br/>
 <br/>
-Run this using using the gradle wrapper included
+Run this using using the maven
 
 ```
-./gradlew bootRun
+mvn spring-boot:run
 ```
 
 And then go to http://localhost:8080 to test the API's.
