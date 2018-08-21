@@ -7,6 +7,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,31 @@ public class RoutesConfiguration {
 				route(RequestPredicates.GET("/{id}"),
 						request -> ok().body(taskRespository.findById(request.pathVariable("id")), TaskModel.class))
 
+				.andRoute(RequestPredicates.GET("/alterar/{valor}/{id}"), 
+						request -> {
+							taskRespository.findById(request.pathVariable("id")).subscribe(
+								task -> {
+									task.setCompleta(Boolean.valueOf(request.pathVariable("valor")));
+									taskRespository.save(task);
+								}
+							);
+							return ok().build();
+						})
+				
+				.andRoute(RequestPredicates.GET("/alterar-muitos/{valor}/{ids}"), 
+						request -> {
+							List<String> ids = Arrays.asList(request.pathVariable("id").split(","));
+							ids.forEach (
+								id -> taskRespository.findById(id).subscribe(
+									task -> {
+										task.setCompleta(Boolean.valueOf(request.pathVariable("valor")));
+										taskRespository.save(task);
+									}
+								)
+							);
+							return ok().build();
+						})
+				
 				.andRoute(RequestPredicates.GET("/remover/{id}"), 
 						request -> {
 							taskRespository.deleteById(request.pathVariable("id")).subscribe();
@@ -40,7 +66,8 @@ public class RoutesConfiguration {
 				
 				.andRoute(RequestPredicates.GET("/remover-muitos/{ids}"), 
 						request -> {
-							taskRespository.deleteByIdIn(Arrays.asList(request.pathVariable("ids").split(",")));
+							List<String> ids = Arrays.asList(request.pathVariable("ids").split(","));
+							ids.forEach(id -> taskRespository.deleteById(id).subscribe());
 							return ok().build();
 						})
 				
