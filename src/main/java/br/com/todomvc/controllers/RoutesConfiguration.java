@@ -6,6 +6,8 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.n
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,9 +38,9 @@ public class RoutesConfiguration {
 							return ok().build();
 						})
 				
-				.andRoute(RequestPredicates.GET("/remover-muitos/{id}"), 
+				.andRoute(RequestPredicates.GET("/remover-muitos/{ids}"), 
 						request -> {
-							taskRespository.deleteById(request.pathVariable("id").split(",")).subscribe();
+							taskRespository.deleteByIdIn(Arrays.asList(request.pathVariable("ids").split(",")));
 							return ok().build();
 						})
 				
