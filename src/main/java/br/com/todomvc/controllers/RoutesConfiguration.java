@@ -38,7 +38,7 @@ public class RoutesConfiguration {
 							taskRespository.findById(request.pathVariable("id")).subscribe(
 								task -> {
 									task.setCompleta(Boolean.valueOf(request.pathVariable("valor")));
-									taskRespository.save(task);
+									taskRespository.save(task).subscribe();
 								}
 							);
 							return ok().build();
@@ -46,12 +46,12 @@ public class RoutesConfiguration {
 				
 				.andRoute(RequestPredicates.GET("/alterar-muitos/{valor}/{ids}"), 
 						request -> {
-							List<String> ids = Arrays.asList(request.pathVariable("id").split(","));
+							List<String> ids = Arrays.asList(request.pathVariable("ids").split(","));
 							ids.forEach (
 								id -> taskRespository.findById(id).subscribe(
 									task -> {
 										task.setCompleta(Boolean.valueOf(request.pathVariable("valor")));
-										taskRespository.save(task);
+										taskRespository.save(task).subscribe();
 									}
 								)
 							);
